@@ -2,7 +2,7 @@
 Summary:	Support for reading and writing UTF8 Strings
 Name:		ghc-%{pkgname}
 Version:	0.3.7
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
@@ -36,26 +36,26 @@ Dokumentacja w formacie HTML dla %{pkgname}.
 %setup -q -n %{pkgname}-%{version}
 
 %build
-./Setup.lhs configure -v2 \
+runhaskell Setup.lhs configure -v2 \
 	--prefix=%{_prefix} \
 	--libdir=%{_libdir} \
 	--libexecdir=%{_libexecdir} \
 	--docdir=%{_docdir}/%{name}-%{version}
 
-./Setup.lhs build
-./Setup.lhs haddock --executables
+runhaskell Setup.lhs build
+runhaskell Setup.lhs haddock --executables
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/%{ghcdir}/package.conf.d
 
-./Setup.lhs copy --destdir=$RPM_BUILD_ROOT
+runhaskell Setup.lhs copy --destdir=$RPM_BUILD_ROOT
 
 # work around automatic haddock docs installation
 rm -rf %{name}-%{version}-doc
 cp -a $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{name}-%{version}-doc
 
-./Setup.lhs register \
+runhaskell Setup.lhs register \
 	--gen-pkg-config=$RPM_BUILD_ROOT/%{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 
 %clean
