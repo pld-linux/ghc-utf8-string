@@ -6,7 +6,7 @@ Release:	1
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
-# Source0-md5:	be8c5ef52a0824babdc89d60c1e9b600
+# Source0-md5:	50e5c395713e716e0e4a56da73f87ccd
 URL:		http://hackage.haskell.org/package/utf8-string/
 BuildRequires:	ghc >= 6.12.3
 BuildRequires:	rpmbuild(macros) >= 1.608
