@@ -1,0 +1,11 @@
+--- utf8-string-1.0.1.1/utf8-string.cabal~	2015-08-23 18:19:40.000000000 +0200
++++ utf8-string-1.0.1.1/utf8-string.cabal	2020-05-23 23:28:54.414989817 +0200
+@@ -19,7 +19,7 @@
+ library
+   Ghc-options:        -W -O2
+ 
+-  build-depends: base >= 4.3 && < 4.9, bytestring >= 0.9
++  build-depends: base >= 4.3 && < 5, bytestring >= 0.9
+ 
+   Extensions:         CPP
+   Exposed-modules:    Codec.Binary.UTF8.String

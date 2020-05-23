@@ -1,12 +1,13 @@
 %define		pkgname	utf8-string
 Summary:	Support for reading and writing UTF8 Strings
 Name:		ghc-%{pkgname}
-Version:	0.3.7
-Release:	3
+Version:	1.0.1.1
+Release:	2
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
-# Source0-md5:	50e5c395713e716e0e4a56da73f87ccd
+# Source0-md5:	fe24e26bd4b09731af66ef27b18b5177
+Patch0:		base-dep.patch
 URL:		http://hackage.haskell.org/package/utf8-string/
 BuildRequires:	ghc >= 6.12.3
 BuildRequires:	rpmbuild(macros) >= 1.608
@@ -34,6 +35,7 @@ Dokumentacja w formacie HTML dla %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
+%patch0 -p1
 
 %build
 runhaskell Setup.lhs configure -v2 \
