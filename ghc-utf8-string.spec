@@ -1,8 +1,12 @@
+#
+# Conditional build:
+%bcond_without	prof	# profiling library
+#
 %define		pkgname	utf8-string
 Summary:	Support for reading and writing UTF8 Strings
 Name:		ghc-%{pkgname}
 Version:	1.0.1.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
@@ -10,6 +14,9 @@ Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkg
 Patch0:		base-dep.patch
 URL:		http://hackage.haskell.org/package/utf8-string/
 BuildRequires:	ghc >= 6.12.3
+%if %{with prof}
+BuildRequires:	ghc-prof
+%endif
 BuildRequires:	rpmbuild(macros) >= 1.608
 %requires_eq	ghc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -21,6 +28,20 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 A UTF8 layer for IO and Strings. The utf8-string package provides
 operations for encoding UTF8 strings to Word8 lists and back, and for
 reading and writing UTF8 without truncation.
+
+%package prof
+Summary:	Profiling %{pkgname} library for GHC
+Summary(pl.UTF-8):	Biblioteka profilująca %{pkgname} dla GHC
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description prof
+Profiling %{pkgname} library for GHC.  Should be installed when
+GHC's profiling subsystem is needed.
+
+%description prof -l pl.UTF-8
+Biblioteka profilująca %{pkgname} dla GHC. Powinna być zainstalowana
+kiedy potrzebujemy systemu profilującego z GHC.
 
 %package doc
 Summary:	HTML documentation for %{pkgname}
@@ -39,6 +60,7 @@ Dokumentacja w formacie HTML dla %{pkgname}.
 
 %build
 runhaskell Setup.lhs configure -v2 \
+	%{?with_prof:--enable-library-profiling} \
 	--prefix=%{_prefix} \
 	--libdir=%{_libdir} \
 	--libexecdir=%{_libexecdir} \
@@ -73,7 +95,36 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*.so
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*.a
+%exclude %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*_p.a
+
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Binary
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Binary/UTF8
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Binary/UTF8/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Binary/UTF8/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/Lazy
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/Lazy/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/Lazy/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/String
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/String/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/String/*.dyn_hi
+
+%if %{with prof}
+%files prof
+%defattr(644,root,root,755)
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*_p.a
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Binary/UTF8/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/ByteString/Lazy/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/String/*.p_hi
+%endif
 
 %files doc
 %defattr(644,root,root,755)
