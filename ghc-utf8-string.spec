@@ -6,7 +6,7 @@
 Summary:	Support for reading and writing UTF8 Strings
 Name:		ghc-%{pkgname}
 Version:	1.0.1.1
-Release:	2
+Release:	3
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
