@@ -56,7 +56,7 @@ Dokumentacja w formacie HTML dla %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 runhaskell Setup.lhs configure -v2 \
